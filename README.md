@@ -24,8 +24,11 @@
 [clique aqui para acessar o vídeo](link#)
 
 Conteúdo do vídeo:
+
 Apresentação pessoal do autor.
+
 Explicação das funcionalidades implementadas.
+
 Demonstração ao vivo na placa BitDogLab.
 
 🎯 Objetivo
@@ -74,17 +77,24 @@ Buzzer: Feedback sonoro.
 
 # ⚙️ Compilação e Gravação
 Pré-requisitos
+
 SDK do Raspberry Pi Pico.
 
 Toolchain CMake (sudo apt install cmake gcc-arm-none-eabi).
 
 Passos
+
 bash
 git clone https://github.com/ateniltonJr16/tar1_fase2.git
+
 cd projeto-integrador
+
 mkdir build && cd build
+
 cmake ..
+
 make -j4
+
 Gravação: Copie o arquivo .uf2 para a placa no modo BOOTSEL.
 
 ## 📂 Estrutura do Código
