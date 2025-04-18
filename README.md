@@ -63,17 +63,17 @@ Tratamento de interrupções e debounce de botões.
 🔹 Modos de Operação: Alternância entre matriz LED e controle RGB.
 
 ## 📦 Componentes Utilizados
-Microcontrolador: RP2040 (BitDogLab).
+- Microcontrolador: RP2040 (BitDogLab).
 
-Display: OLED SSD1306 (128x64, I2C).
+- Display: OLED SSD1306 (128x64, I2C).
 
-Joystick: Eixos analógicos + botão.
+- Joystick: Eixos analógicos + botão.
 
-Matriz LED: 5x5 (WS2812B).
+- Matriz LED: 5x5 (WS2812B).
 
-LED RGB: PWM (Vermelho, Verde, Azul).
+- LED RGB: PWM (Vermelho, Verde, Azul).
 
-Buzzer: Feedback sonoro.
+- Buzzer: Feedback sonoro.
 
 # ⚙️ Compilação e Gravação
 Pré-requisitos
