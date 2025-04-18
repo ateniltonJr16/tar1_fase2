@@ -21,7 +21,7 @@
 
 ## 📹 Demonstração
 
-(clique aqui para acessar o vídeo)[link#]
+[clique aqui para acessar o vídeo](link#)
 
 Conteúdo do vídeo:
 Apresentação pessoal do autor.
@@ -125,4 +125,5 @@ projeto-integrador/
 
 ## 👨‍💻 Autor
 Nome: Atenilton Santos de Souza Júnior
+
 GitHub: ateniltonJr16
