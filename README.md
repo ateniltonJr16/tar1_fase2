@@ -1,106 +1,125 @@
-Projeto Integrador - BitDogLab
-Sistemas Embarcados com RP2040
+Projeto Integrador - BitDogLab (Sistemas Embarcados)
 📌 Sumário
-📹 Vídeo de Demonstração
+📹 Demonstração
 
-🎯 Objetivo do Projeto
+🎯 Objetivo
 
-🛠️ Funcionalidades Implementadas
+🛠️ Funcionalidades Obrigatórias
 
-📦 Hardware Utilizado
+✨ Funcionalidades Adicionais
 
-⚙️ Compilação e Instalação
+📦 Componentes Utilizados
 
-📂 Estrutura do Projeto
+⚙️ Compilação e Gravação
+
+📂 Estrutura do Código
 
 👨‍💻 Autor
 
-📹 Vídeo de Demonstração
-Assistir no YouTube
+📹 Demonstração
+
+(clique aqui para acessar o vídeo)[link#]
 
 Conteúdo do vídeo:
+Apresentação pessoal do autor.
+Explicação das funcionalidades implementadas.
+Demonstração ao vivo na placa BitDogLab.
 
-Apresentação pessoal
+🎯 Objetivo
+Desenvolver um sistema embarcado na placa BitDogLab utilizando o RP2040, integrando:
 
-Explicação das funcionalidades
+Leitura analógica do joystick (ADC).
 
-Demonstração ao vivo na placa BitDogLab
+Controle de matriz LED, LED RGB e buzzer.
 
-(Substitua pelo link real do seu vídeo)
+Exibição de informações no display SSD1306 (I2C).
 
-🎯 Objetivo do Projeto
-Desenvolver um sistema embarcado completo utilizando:
+Comunicação serial via UART para depuração.
 
-Leitura analógica do joystick via ADC
+Tratamento de interrupções e debounce de botões.
 
-Controle de matriz LED 5x5 e LED RGB com PWM
+🛠️ Funcionalidades Obrigatórias
+✅ Display SSD1306: Exibe um quadrado 8x8 pixels centralizado, movendo-se proporcionalmente ao joystick.
 
-Exibição gráfica no display OLED SSD1306 (I2C)
+✅ Joystick: Leitura analógica dos eixos X/Y (ADC) para controle do quadrado.
 
-Comunicação serial via UART para depuração
+✅ Botões: Tratamento com debounce e interrupções.
 
-Tratamento de interrupções para botões com debounce
+✅ UART: Envio de dados para monitoramento em terminal serial.
 
-🛠️ Funcionalidades Implementadas
-Funcionalidades Obrigatórias
-✅ Controle de um cursor 8x8 no display OLED via joystick
-✅ Leitura precisa dos eixos X/Y do joystick (ADC)
-✅ Tratamento de botões com debounce em hardware
-✅ Saída de depuração via UART (115200 baud)
+✨ Funcionalidades Adicionais
+🔹 Matriz LED 5x5: Feedback visual complementar.
+🔹 LED RGB: Cores controladas por PWM.
+🔹 Buzzer: Alertas sonoros para eventos.
+🔹 Modos de Operação: Alternância entre matriz LED e controle RGB.
 
-Funcionalidades Adicionais
-✨ Controle de matriz LED WS2812B 5x5
-✨ Ajuste de cor RGB via PWM
-✨ Feedback sonoro com buzzer
-✨ Multiplos modos de operação
+📦 Componentes Utilizados
+Microcontrolador: RP2040 (BitDogLab).
 
-📦 Hardware Utilizado
-Componente	Especificações
-Microcontrolador	RP2040 (BitDogLab)
-Display	OLED SSD1306 128x64 (I2C)
-Joystick	Analógico + Botão
-Matriz LED	WS2812B 5x5
-LED RGB	PWM controlado
-Buzzer	Ativo 5V
-⚙️ Compilação e Instalação
+Display: OLED SSD1306 (128x64, I2C).
+
+Joystick: Eixos analógicos + botão.
+
+Matriz LED: 5x5 (WS2812B).
+
+LED RGB: PWM (Vermelho, Verde, Azul).
+
+Buzzer: Feedback sonoro.
+
+⚙️ Compilação e Gravação
 Pré-requisitos
-SDK do Raspberry Pi Pico
+SDK do Raspberry Pi Pico.
 
-Toolchain ARM (gcc-arm-none-eabi)
+Toolchain CMake (sudo apt install cmake gcc-arm-none-eabi).
 
-CMake (versão 3.13+)
-
-Passo a Passo
-# Clone o repositório
+Passos
+bash
 git clone https://github.com/ateniltonJr16/tar1_fase2.git
-cd tar1_fase2
-
-# Configure o projeto
+cd projeto-integrador
 mkdir build && cd build
 cmake ..
-
-# Compile
 make -j4
+Gravação: Copie o arquivo .uf2 para a placa no modo BOOTSEL.
 
-# Grave no RP2040 (modo BOOTSEL)
-cp tar1_fase2.uf2 /media/$USER/RPI-RP2/
-📂 Estrutura do Projeto
-tar1_fase2/
-├── lib/                  # Drivers de hardware
-│   ├── ssd1306.[ch]      # Driver do display OLED
-│   ├── buttons.[ch]      # Tratamento de botões
-│   ├── rgb.[ch]          # Controle LED RGB
-│   ├── display_init.[ch] # Inicialização do display
-│   ├── matrixws.[ch]     # Controle matriz LED
-│   └── buzzer.[ch]       # Driver do buzzer
-│
-├── func/                 # Lógica principal
-│   ├── funcionalidades.[ch] # Configurações gerais
-│   └── opcoes_escolhas.[ch] # Lógica de controle
-│
-├── CMakeLists.txt        # Configuração de build
-├── tar1_fase2.c          # Ponto de entrada
-└── README.md             # Documentação
+📂 Estrutura do Código
+plaintext
+projeto-integrador/  
+├── lib/  
+│   ├── font.h           # Possui os caractéres do display 
+
+│   ├── ssd1306.c,h      # Display OLED 
+
+│   ├── buttons.c,h      # Configura os botões
+
+│   └── rgb.c,h          # Controle LED RGB
+
+│   └── display_init.c,h # INicializa e desenha no display 
+
+│   └── matrixws.c,h     # Configua a matriz de leds 5x5
+
+│   └── ws2818b.pio.h    # biblioteca da matriz leds ws2812
+
+│   └── buzzer.c,h       # Inicializa e configura o pwm do buzzer
+
+│   └── ws2818b.pio.h    # biblioteca da matriz leds ws2812  
+
+├── func/  
+
+│   ├── funcionalidades.c,h #Contém as configurações das funções principais
+
+│   └── opcoes_escolhas.c,h #Funções principais do projeto 
+├── CMakeLists.txt # 
+
+├── tar1_fase2.c   # Código fonte
+
+├── diagram.json   # Simulador interativo
+
+├── wokwi.toml     # Para simular no wokwi
+
+├── ...            # Outos arquivos padrões
+
+└── README.md  
+
 👨‍💻 Autor
 Nome: Atenilton Santos de Souza Júnior
 GitHub: ateniltonJr16
