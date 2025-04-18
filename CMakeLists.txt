@@ -35,7 +35,14 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(tar1_fase2 tar1_fase2.c )
+add_executable(tar1_fase2 
+                tar1_fase2.c 
+                lib/rgb.c
+                lib/ssd1306.c
+                lib/buttons.c
+                lib/display_init.c
+                lib/matrixws.c
+                lib/buzzer.c)
 
 pico_set_program_name(tar1_fase2 "tar1_fase2")
 pico_set_program_version(tar1_fase2 "0.1")
@@ -46,7 +53,12 @@ pico_enable_stdio_usb(tar1_fase2 1)
 
 # Add the standard library to the build
 target_link_libraries(tar1_fase2
-        pico_stdlib)
+        pico_stdlib
+        hardware_pwm
+        hardware_i2c
+        hardware_adc
+        hardware_pio
+        hardware_uart)
 
 # Add the standard include files to the build
 target_include_directories(tar1_fase2 PRIVATE
