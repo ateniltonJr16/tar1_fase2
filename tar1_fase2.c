@@ -9,6 +9,7 @@
 #include "lib/rgb.h"
 #include "lib/display_init.h"
 #include "lib/buzzer.h"
+#include "lib/matrixws.h"
 
 #define VRX_PIN 26
 #define VRY_PIN 27
@@ -89,6 +90,35 @@ void quadrado() {
     ssd1306_send_data(&ssd);
 }
 
+#define DEADZONE 200  // Zona morta para considerar o joystick centralizado
+
+// Variáveis globais
+int led_x = 2, led_y = 2;  // Posição inicial do LED (centro da matriz 5x5)
+
+void atualizar_matriz_led() {
+    int mat[5][5][3] = {0};  // Inicializa toda a matriz com LEDs apagados
+    
+    // Verifica se estamos na zona morta (joystick centralizado)
+    if (abs((int)x_value - 2048) < DEADZONE && abs((int)y_value - 2048) < DEADZONE) {
+        // Centraliza o LED
+        led_x = 2;
+        led_y = 2;
+    } else {
+        // Mapeia os valores do joystick para posições na matriz 5x5
+        led_x = ((int)y_value * 5) / 4096;
+        led_y = 4 - ((int)x_value * 5) / 4096;  // Inverte o eixo Y
+        
+        // Garante que os valores estejam dentro dos limites da matriz
+        led_x = (led_x < 0) ? 0 : (led_x > 4) ? 4 : led_x;
+        led_y = (led_y < 0) ? 0 : (led_y > 4) ? 4 : led_y;
+    }
+    
+    // Acende o LED na posição calculada (vermelho)
+    mat[led_y][led_x][1] = 10;  // LED vermelho
+    
+    desenhaMatriz(mat);
+}
+
 uint pwm_wrap = 4095;
 char buffer[100];
 
@@ -124,6 +154,7 @@ int main() {
     iniciar_rgb();
     display();
     init_adc_joy();
+    controle(PINO_MATRIZ);
 
     pwm_init_gpio(red, pwm_wrap);
     pwm_init_gpio(blue, pwm_wrap);
@@ -134,6 +165,7 @@ int main() {
 
     while (true) {
         quadrado();
+        atualizar_matriz_led();  // Atualiza a matriz de LEDs baseado no joystick
         condicoes();
         sleep_ms(100);
     }

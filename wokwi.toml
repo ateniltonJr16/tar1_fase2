@@ -1,4 +1,4 @@
 [wokwi]
 version = 1
-firmware = 'build\tarefa_revisao.uf2'
-elf = 'build\tarefa_revisao.elf'
+firmware = 'build\tar1_fase2.uf2'
+elf = 'build\tar1_fase2.elf'
