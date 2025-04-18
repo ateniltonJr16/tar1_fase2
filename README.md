@@ -52,8 +52,11 @@ Tratamento de interrupções e debounce de botões.
 
 ## ✨ Funcionalidades Adicionais
 🔹 Matriz LED 5x5: Feedback visual complementar.
+
 🔹 LED RGB: Cores controladas por PWM.
+
 🔹 Buzzer: Alertas sonoros para eventos.
+
 🔹 Modos de Operação: Alternância entre matriz LED e controle RGB.
 
 ## 📦 Componentes Utilizados
