@@ -1,4 +1,4 @@
-#Projeto de Revisão - BitDogLab (Sistemas Embarcados)
+## Projeto de Revisão - BitDogLab (Sistemas Embarcados)
 
 📌 Sumário
 📹 Demonstração
@@ -17,7 +17,8 @@
 
 👨‍💻 Autor
 
-📹 Demonstração
+
+# 📹 Demonstração
 
 (clique aqui para acessar o vídeo)[link#]
 
@@ -39,7 +40,7 @@ Comunicação serial via UART para depuração.
 
 Tratamento de interrupções e debounce de botões.
 
-🛠️ Funcionalidades Obrigatórias
+# 🛠️ Funcionalidades Obrigatórias
 ✅ Display SSD1306: Exibe um quadrado 8x8 pixels centralizado, movendo-se proporcionalmente ao joystick.
 
 ✅ Joystick: Leitura analógica dos eixos X/Y (ADC) para controle do quadrado.
@@ -48,13 +49,13 @@ Tratamento de interrupções e debounce de botões.
 
 ✅ UART: Envio de dados para monitoramento em terminal serial.
 
-✨ Funcionalidades Adicionais
+# ✨ Funcionalidades Adicionais
 🔹 Matriz LED 5x5: Feedback visual complementar.
 🔹 LED RGB: Cores controladas por PWM.
 🔹 Buzzer: Alertas sonoros para eventos.
 🔹 Modos de Operação: Alternância entre matriz LED e controle RGB.
 
-📦 Componentes Utilizados
+# 📦 Componentes Utilizados
 Microcontrolador: RP2040 (BitDogLab).
 
 Display: OLED SSD1306 (128x64, I2C).
@@ -67,7 +68,7 @@ LED RGB: PWM (Vermelho, Verde, Azul).
 
 Buzzer: Feedback sonoro.
 
-⚙️ Compilação e Gravação
+# ⚙️ Compilação e Gravação
 Pré-requisitos
 SDK do Raspberry Pi Pico.
 
@@ -82,7 +83,7 @@ cmake ..
 make -j4
 Gravação: Copie o arquivo .uf2 para a placa no modo BOOTSEL.
 
-📂 Estrutura do Código
+# 📂 Estrutura do Código
 plaintext
 projeto-integrador/  
 ├── lib/  
@@ -121,6 +122,6 @@ projeto-integrador/
 
 └── README.md  
 
-👨‍💻 Autor
+# 👨‍💻 Autor
 Nome: Atenilton Santos de Souza Júnior
 GitHub: ateniltonJr16
