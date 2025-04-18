@@ -36,13 +36,17 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(tar1_fase2 
-                tar1_fase2.c 
+                tar1_fase2.c # Principal
+                #Pasta lib
                 lib/rgb.c
                 lib/ssd1306.c
                 lib/buttons.c
                 lib/display_init.c
                 lib/matrixws.c
-                lib/buzzer.c)
+                lib/buzzer.c
+                #Pasta func
+                func/funcionalidades.c
+                func/opcoes_escolhidas.c)
 
 pico_set_program_name(tar1_fase2 "tar1_fase2")
 pico_set_program_version(tar1_fase2 "0.1")
@@ -57,8 +61,7 @@ target_link_libraries(tar1_fase2
         hardware_pwm
         hardware_i2c
         hardware_adc
-        hardware_pio
-        hardware_uart)
+        hardware_pio)
 
 # Add the standard include files to the build
 target_include_directories(tar1_fase2 PRIVATE
@@ -71,4 +74,3 @@ target_link_libraries(tar1_fase2
         )
 
 pico_add_extra_outputs(tar1_fase2)
-
