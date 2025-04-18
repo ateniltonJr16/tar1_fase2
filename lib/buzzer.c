@@ -3,6 +3,7 @@
 #include "hardware/gpio.h"
 
 volatile bool buzzer_play_A = false;
+volatile bool buzzer_play_B = false;
 volatile bool buzzer_play_J = false;
 
 void buzzer_init(uint gpio, uint freq_hz) {

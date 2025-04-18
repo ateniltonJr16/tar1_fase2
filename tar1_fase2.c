@@ -3,6 +3,7 @@
 #include "hardware/pio.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
+#include "hardware/uart.h"
 #include "lib/buttons.h"
 #include <stdio.h>
 #include "lib/font.h"
@@ -11,12 +12,24 @@
 #include "lib/buzzer.h"
 #include "lib/matrixws.h"
 
+#define UART_ID uart0
+#define BAUD_RATE 115200
+#define UART_TX_PIN 0
+#define UART_RX_PIN 1
+
+void quadrado();
+void atualizar_matriz_led();
+
 #define VRX_PIN 26
 #define VRY_PIN 27
+#define DEADZONE 200  // Zona morta para considerar o joystick centralizado
 
 // Variáveis globais
 uint16_t x_value = 0, y_value = 0;
 uint16_t pwm_red = 0, pwm_blue = 0;
+int led_x = 2, led_y = 2;  // Posição inicial do LED (centro da matriz 5x5)
+int estado_B = 0; // 0 = quadrado, 1 = matriz LED
+int cor_atual = 0; // 0 = Vermelho, 1 = Verde, 2 = Azul
 
 void init_adc_joy() {
     adc_init();
@@ -37,9 +50,9 @@ void debounce_botao(uint pino, volatile uint32_t *last_irq_time, bool *estado_LE
 
     if (tempo_atual - *last_irq_time > DEBOUNCE_DELAY) {
         *last_irq_time = tempo_atual;
-        *estado_LED = !(*estado_LED);
 
         if (pino == BOTAO_A) {
+            *estado_LED = !(*estado_LED);
             if (*estado_LED) {
                 pwm_set_gpio_level(red, 4095);
                 pwm_set_gpio_level(blue, 4095);
@@ -50,9 +63,16 @@ void debounce_botao(uint pino, volatile uint32_t *last_irq_time, bool *estado_LE
                 buzzer_play_A = true;
             }
         } else if (pino == BOTAO_J) {
+            *estado_LED = !(*estado_LED);
             gpio_put(green, *estado_LED);
             borda_estado = (borda_estado + 1) % 3;
             buzzer_play_J = true;
+        } else if (pino == BOTAO_B) {
+            estado_B = (estado_B + 1) % 2; // Alterna entre 0 e 1
+            if (estado_B == 1) { // Se mudou para modo matriz
+                cor_atual = (cor_atual + 1) % 3; // Cicla entre 0, 1 e 2
+            }
+            buzzer_play_B = true;
         }
     }
 }
@@ -62,6 +82,8 @@ void botao_callback(uint gpio, uint32_t eventos) {
         debounce_botao(BOTAO_A, &last_irq_time_A, &estado_LED_A);
     } else if (gpio == BOTAO_J) {
         debounce_botao(BOTAO_J, &last_irq_time_J, &estado_LED_B);
+    } else if (gpio == BOTAO_B) {
+        debounce_botao(BOTAO_B, &last_irq_time_B, &estado_LED_B);
     }
 }
 
@@ -90,13 +112,13 @@ void quadrado() {
     ssd1306_send_data(&ssd);
 }
 
-#define DEADZONE 200  // Zona morta para considerar o joystick centralizado
-
-// Variáveis globais
-int led_x = 2, led_y = 2;  // Posição inicial do LED (centro da matriz 5x5)
-
 void atualizar_matriz_led() {
     int mat[5][5][3] = {0};  // Inicializa toda a matriz com LEDs apagados
+    
+    adc_select_input(0);
+    x_value = adc_read();
+    adc_select_input(1);
+    y_value = adc_read();
     
     // Verifica se estamos na zona morta (joystick centralizado)
     if (abs((int)x_value - 2048) < DEADZONE && abs((int)y_value - 2048) < DEADZONE) {
@@ -113,8 +135,18 @@ void atualizar_matriz_led() {
         led_y = (led_y < 0) ? 0 : (led_y > 4) ? 4 : led_y;
     }
     
-    // Acende o LED na posição calculada (vermelho)
-    mat[led_y][led_x][1] = 10;  // LED vermelho
+    // Acende o LED na posição calculada com a cor atual
+    switch(cor_atual) {
+        case 0: // Vermelho
+            mat[led_y][led_x][0] = BRILHO_MAX;
+            break;
+        case 1: // Verde
+            mat[led_y][led_x][1] = BRILHO_MAX;
+            break;
+        case 2: // Azul
+            mat[led_y][led_x][2] = BRILHO_MAX;
+            break;
+    }
     
     desenhaMatriz(mat);
 }
@@ -126,30 +158,35 @@ void condicoes() {
     if (estado_LED_A) {
         pwm_set_gpio_level(red, pwm_red);
         pwm_set_gpio_level(blue, pwm_blue);
-        sprintf(buffer, "(x, y) = (%u%%, %u%%)  ", x_value * 100 / 4096, y_value * 100 / 4096);
-        uart_puts(uart0, buffer);
-        sprintf(buffer, "Brilho(led azul, led vermelho) = (%u%%, %u%%)\r\n", pwm_blue * 100 / 4096, pwm_red * 100 / 4096);
-        uart_puts(uart0, buffer);
-    } else {
-        sprintf(buffer, "(x, y) = (%u%%, %u%%) \r\n", x_value * 100 / 4096, y_value * 100 / 4096);
-        uart_puts(uart0, buffer);
-    }
+    } else {}
     if (buzzer_play_A) {
-        buzzer_play_A = false; // limpa a flag
+        buzzer_play_A = false;
         buzzer_set_freq(buzzer, 500);
-        sleep_ms(100); // aqui pode usar sleep
+        sleep_ms(100);
+        buzzer_stop(buzzer);
+    }
+    if (buzzer_play_B) {
+        buzzer_play_B = false;
+        buzzer_set_freq(buzzer, 50);
+        sleep_ms(100);
         buzzer_stop(buzzer);
     }
     if (buzzer_play_J) {
-        buzzer_play_J = false; // limpa a flag
+        buzzer_play_J = false;
         buzzer_set_freq(buzzer, 100);
-        sleep_ms(100); // aqui pode usar sleep
+        sleep_ms(100);
         buzzer_stop(buzzer);
     }
 }
 
 int main() {
-    stdio_init_all();
+    // Inicializa a UART
+    uart_init(UART_ID, BAUD_RATE);
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+    
+    stdio_init_all(); // Inicializa também a stdio para printf
+    
     iniciar_botoes();
     iniciar_rgb();
     display();
@@ -159,13 +196,32 @@ int main() {
     pwm_init_gpio(red, pwm_wrap);
     pwm_init_gpio(blue, pwm_wrap);
 
+    // Configura o callback para o botão B
+    gpio_set_irq_enabled_with_callback(BOTAO_B, GPIO_IRQ_EDGE_FALL, true, &botao_callback);
+
     buzzer_init(buzzer, 200);
     sleep_ms(500);
     buzzer_stop(buzzer);
 
+    // Mensagem inicial para confirmar que a UART está funcionando
+    uart_puts(UART_ID, "Sistema inicializado. Pronto para receber comandos.\r\n");
+
     while (true) {
-        quadrado();
-        atualizar_matriz_led();  // Atualiza a matriz de LEDs baseado no joystick
+        // Chama a função apropriada baseada no estado_B
+        if (estado_B == 0) {
+            quadrado();
+            desliga(); 
+            printf("Controle a posição do quadrado 8x8 do display\n");
+        } else {
+            ssd1306_fill(&ssd, false);
+            ssd1306_draw_string(&ssd, "Controle", 24, 10);
+            ssd1306_draw_string(&ssd, "O LED", 33, 30);
+            ssd1306_draw_string(&ssd, "da matriz", 30, 50);
+            ssd1306_send_data(&ssd);
+            atualizar_matriz_led();
+            printf("Controle a posição do LED da matriz\n");
+        }
+        
         condicoes();
         sleep_ms(100);
     }

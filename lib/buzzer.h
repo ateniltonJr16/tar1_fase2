@@ -5,6 +5,7 @@
 
 #define buzzer 21
 extern volatile bool buzzer_play_A;
+extern volatile bool buzzer_play_B;
 extern volatile bool buzzer_play_J;
 
 void buzzer_init(uint gpio, uint freq_hz);
