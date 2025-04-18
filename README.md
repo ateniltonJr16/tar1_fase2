@@ -113,7 +113,8 @@ projeto-integrador/
 
 │   ├── funcionalidades.c,h #Contém as configurações das funções principais
 
-│   └── opcoes_escolhas.c,h #Funções principais do projeto 
+│   └── opcoes_escolhas.c,h #Funções principais do projeto
+
 ├── CMakeLists.txt # 
 
 ├── tar1_fase2.c   # Código fonte
