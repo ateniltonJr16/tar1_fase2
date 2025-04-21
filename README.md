@@ -103,7 +103,7 @@ Ao clonar o repositório, reconstrua a build, pico_sdk_import.cmake e o .VSCODE.
 
 No CmakeLists, adicione o trecho acima da linha #===...= com as suas configurações e com o nome do projeto como no exemplo:
 
-![image](exemplo_cmake.png)
+![image](imagens/exemplo_cmake.png)
 
 Em seguida compile o projeto e para a gravação Copie o arquivo .uf2 gerado para a placa no modo BOOTSEL.
 
