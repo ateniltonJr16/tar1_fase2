@@ -21,7 +21,7 @@
 
 ## 📹 Demonstração
 
-[clique aqui para acessar o vídeo](link#)
+[clique aqui para acessar o vídeo](https://drive.google.com/file/d/1KGhIHI-ZHLxwJsvF2xodwm_9o59Hkp7k/view?usp=drive_link)
 
 Conteúdo do vídeo:
 
@@ -96,6 +96,16 @@ cmake ..
 make -j4
 
 Gravação: Copie o arquivo .uf2 para a placa no modo BOOTSEL.
+
+## Método alternativo:
+
+Ao clonar o repositório, reconstrua a build, pico_sdk_import.cmake e o .VSCODE.
+
+No CmakeLists, adicione o trecho acima da linha #===...= com as suas configurações e com o nome do projeto como no exemplo:
+
+![alt text](exemplo_CmakeLists.png)
+
+Em seguida compile o projeto e para a gravação Copie o arquivo .uf2 gerado para a placa no modo BOOTSEL.
 
 ## 📂 Estrutura do Código
 plaintext
