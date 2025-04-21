@@ -45,13 +45,25 @@ void atualizar_matriz_led() {
     // Acende o LED na posição calculada com a cor atual
     switch(cor_atual) {
         case 0: // Vermelho
-            mat[led_y][led_x][0] = BRILHO_MAX;
+            mat[led_y][led_x][0] = 20; // "=20": intensidade do led
             break;
         case 1: // Verde
-            mat[led_y][led_x][1] = BRILHO_MAX;
+            mat[led_y][led_x][1] = 20;
             break;
         case 2: // Azul
-            mat[led_y][led_x][2] = BRILHO_MAX;
+            mat[led_y][led_x][2] = 20;
+            break;
+        case 3: // 
+            mat[led_y][led_x][0] = 20;
+            mat[led_y][led_x][1] = 20;
+            break;
+        case 4: // 
+            mat[led_y][led_x][0] = 20;
+            mat[led_y][led_x][2] = 20;
+            break;
+        case 5: // 
+            mat[led_y][led_x][1] = 20;
+            mat[led_y][led_x][2] = 20;
             break;
     }
     
@@ -61,11 +73,12 @@ void atualizar_matriz_led() {
 uint pwm_wrap = 4095;
 char buffer[100];
 
-void condicoes() {
+void beeps() {
     if (estado_LED_A) {
         pwm_set_gpio_level(red, pwm_red);
         pwm_set_gpio_level(blue, pwm_blue);
     } else {}
+
     if (buzzer_play_A) {
         buzzer_play_A = false;
         buzzer_set_freq(buzzer, 500);
@@ -89,16 +102,25 @@ void condicoes() {
 void alternar_funcoes() {
     // Chama a função apropriada baseada no estado_B
     if (estado_B == 0) {
-        printf("Controle a posição do quadrado 8x8 do display\n");
         quadrado();
         desliga(); 
     } else {
-        printf("Controle a posição do LED da matriz\n");
+        // Limpa o display
         ssd1306_fill(&ssd, false);
-        ssd1306_draw_string(&ssd, "Controle", 24, 10);
-        ssd1306_draw_string(&ssd, "O LED", 33, 30);
-        ssd1306_draw_string(&ssd, "da matriz", 30, 50);
+
+        // Exibe os textos fixos
+        ssd1306_draw_string(&ssd, "PWM Joystick", 16, 20);
+
+        // Adiciona os valores do joystick na parte inferior
+        char joy_values[32];
+        snprintf(joy_values, sizeof(joy_values), "X:%3.0f%% Y:%3.0f%%", 
+                (float)x_value / 4095 * 100, 
+                (float)y_value / 4095 * 100);
+        ssd1306_draw_string(&ssd, joy_values, 20, 40);  // Posiciona na linha inferior
+
+        // Atualiza o display
         ssd1306_send_data(&ssd);
+
         atualizar_matriz_led();
     }
 }

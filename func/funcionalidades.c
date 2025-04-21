@@ -3,6 +3,7 @@
 // Variáveis globais
 uint16_t x_value = 0, y_value = 0;
 uint16_t pwm_red = 0, pwm_blue = 0;
+
 int led_x = 2, led_y = 2;  // Posição inicial do LED (centro da matriz 5x5)
 int estado_B = 0; // 0 = quadrado, 1 = matriz LED
 int cor_atual = 0; // 0 = Vermelho, 1 = Verde, 2 = Azul
@@ -46,7 +47,7 @@ void debounce_botao(uint pino, volatile uint32_t *last_irq_time, bool *estado_LE
         } else if (pino == BOTAO_B) {
             estado_B = (estado_B + 1) % 2; // Alterna entre 0 e 1
             if (estado_B == 1) { // Se mudou para modo matriz
-                cor_atual = (cor_atual + 1) % 3; // Cicla entre 0, 1 e 2
+                cor_atual = (cor_atual + 1) % 6; // Cicla entre 0, 1 e 2
             }
             buzzer_play_B = true;
         }

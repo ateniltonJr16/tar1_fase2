@@ -12,7 +12,7 @@ extern char buffer[100];
 
 void quadrado();
 void atualizar_matriz_led();
-void condicoes();
+void beeps();
 void alternar_funcoes();
 
 #endif
