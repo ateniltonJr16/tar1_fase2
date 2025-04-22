@@ -1,5 +1,13 @@
 # ==========================================================================================
 
+# Generated CMake Pico project file
+
+cmake_minimum_required(VERSION 3.13)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Definir nome do projeto em uma variável para fácil substituição
 set(NOME_PROJETO tar1_fase2) # Aqui você po~e o nome do projeto
 
