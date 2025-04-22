@@ -62,3 +62,16 @@ target_link_libraries(${NOME_PROJETO}
 
 # Gerar arquivos .uf2, .bin, .hex e .elf
 pico_add_extra_outputs(${NOME_PROJETO})
+
+# Copiar arquivos de configuração VS Code, se não existirem
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/.vscode)
+
+foreach(config_file tasks.json launch.json)
+    set(src "${CMAKE_SOURCE_DIR}/vscode_template/${config_file}")
+    set(dst "${CMAKE_SOURCE_DIR}/.vscode/${config_file}")
+
+    if(EXISTS ${src} AND NOT EXISTS ${dst})
+        file(COPY ${src} DESTINATION ${CMAKE_SOURCE_DIR}/.vscode/)
+        message(STATUS "Arquivo ${config_file} copiado para .vscode/")
+    endif()
+endforeach()
