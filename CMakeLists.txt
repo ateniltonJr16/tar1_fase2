@@ -1,6 +1,7 @@
-
-
 # ==========================================================================================
+
+# Definir nome do projeto em uma variável para fácil substituição
+set(NOME_PROJETO tar1_fase2) # Aqui você po~e o nome do projeto
 
 # Escolher a placa usada (pico ou pico_w)
 set(PICO_BOARD pico_w CACHE STRING "Board type")
@@ -16,13 +17,15 @@ pico_sdk_init()
 
 # Adicionar o executável
 add_executable(${NOME_PROJETO}
-    ${NOME_PROJETO}.c          # Arquivo principal
+    ${NOME_PROJETO}.c  # Arquivo principal
+    # Pasta lib
     lib/rgb.c
     lib/ssd1306.c
     lib/buttons.c
     lib/display_init.c
     lib/matrixws.c
     lib/buzzer.c
+    # Pasta func
     func/funcionalidades.c
     func/opcoes_escolhidas.c
 )
